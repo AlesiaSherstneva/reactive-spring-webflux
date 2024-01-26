@@ -21,4 +21,8 @@ public class FluxAndMonoGeneratorService {
     public Mono<String> namesMono() {
         return Mono.just("Alex");
     }
+
+    public Flux<String> namesFluxMap() {
+        return namesFlux().map(String::toUpperCase);
+    }
 }
