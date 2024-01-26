@@ -25,4 +25,10 @@ public class FluxAndMonoGeneratorService {
     public Flux<String> namesFluxMap() {
         return namesFlux().map(String::toUpperCase);
     }
+
+    public Flux<String> namesFluxImmutability() {
+        Flux<String> namesFlux = Flux.fromIterable(List.of("Alex", "Ben", "Chloe"));
+        namesFlux.map(String::toUpperCase);
+        return namesFlux; // words are not in upper case
+    }
 }
