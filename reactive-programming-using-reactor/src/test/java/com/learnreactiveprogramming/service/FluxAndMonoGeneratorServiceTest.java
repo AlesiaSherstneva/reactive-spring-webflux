@@ -29,16 +29,16 @@ class FluxAndMonoGeneratorServiceTest {
 
     @Test
     void namesFluxMapTest() {
-        Flux<String> namesFluxMap = generatorService.namesFluxMap();
-        StepVerifier.create(namesFluxMap)
+        Flux<String> namesFlux = generatorService.namesFluxMap();
+        StepVerifier.create(namesFlux)
                 .expectNext("ALEX", "BEN", "CHLOE")
                 .verifyComplete();
     }
 
     @Test
     void namesFluxImmutabilityTest() {
-        Flux<String> namesFluxMap = generatorService.namesFluxImmutability();
-        StepVerifier.create(namesFluxMap)
+        Flux<String> namesFlux = generatorService.namesFluxImmutability();
+        StepVerifier.create(namesFlux)
                 .expectNext("Alex", "Ben", "Chloe")
                 .verifyComplete();
     }
