@@ -31,4 +31,10 @@ public class FluxAndMonoGeneratorService {
         namesFlux.map(String::toUpperCase);
         return namesFlux; // words are not in upper case
     }
+
+    public Flux<String> namesFluxMapFilter(int stringLength) {
+        return namesFlux()
+                .map(String::toUpperCase)
+                .filter(s -> s.length() > stringLength);
+    }
 }

@@ -42,4 +42,12 @@ class FluxAndMonoGeneratorServiceTest {
                 .expectNext("Alex", "Ben", "Chloe")
                 .verifyComplete();
     }
+
+    @Test
+    void namesFluxMapFilterTest() {
+        Flux<String> namedFlux = generatorService.namesFluxMapFilter(3);
+        StepVerifier.create(namedFlux)
+                .expectNext("ALEX", "CHLOE")
+                .verifyComplete();
+    }
 }
