@@ -54,6 +54,11 @@ public class FluxAndMonoGeneratorService {
                 .flatMap(this::splitStringWithDelay); // words split in async order
     }
 
+    public Flux<String> namedFluxConcatMap() {
+        return Flux.just("ALEX", "BEN", "CHLOE")
+                .concatMap(this::splitStringWithDelay); // async order, but return in right order
+    }
+
     private Flux<String> splitStringWithDelay(String name) {
         int delay = new Random().nextInt(1000);
         return Flux.just(name.split(""))

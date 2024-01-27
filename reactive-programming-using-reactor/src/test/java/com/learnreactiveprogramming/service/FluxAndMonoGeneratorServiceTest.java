@@ -66,4 +66,12 @@ class FluxAndMonoGeneratorServiceTest {
                 .expectNextCount(12)
                 .verifyComplete();
     }
+
+    @Test
+    void namedFluxConcatMapTest() {
+        Flux<String> namedFlux = generatorService.namedFluxConcatMap();
+        StepVerifier.create(namedFlux)
+                .expectNext("A", "L", "E", "X", "B", "E", "N", "C", "H", "L", "O", "E")
+                .verifyComplete();
+    }
 }
