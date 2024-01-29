@@ -40,7 +40,7 @@ public class FluxAndMonoGeneratorService {
                 .filter(s -> s.length() > stringLength);
     }
 
-    public Flux<String> namedFluxFlatMap() {
+    public Flux<String> namesFluxFlatMap() {
         return Flux.just("ALEX", "BEN", "CHLOE")
                 .flatMap(this::splitString);
     }
@@ -49,12 +49,12 @@ public class FluxAndMonoGeneratorService {
         return Flux.just(name.split(""));
     }
 
-    public Flux<String> namedFluxFlatMapAsync() {
+    public Flux<String> namesFluxFlatMapAsync() {
         return Flux.just("ALEX", "BEN", "CHLOE")
                 .flatMap(this::splitStringWithDelay); // letters return in async order
     }
 
-    public Flux<String> namedFluxConcatMap() {
+    public Flux<String> namesFluxConcatMap() {
         return Flux.just("ALEX", "BEN", "CHLOE")
                 .concatMap(this::splitStringWithDelay); // async, but return right order
     }

@@ -47,32 +47,32 @@ class FluxAndMonoGeneratorServiceTest {
 
     @Test
     void namesFluxMapFilterTest() {
-        Flux<String> namedFlux = generatorService.namesFluxMapFilter(3);
-        StepVerifier.create(namedFlux)
+        Flux<String> namesFlux = generatorService.namesFluxMapFilter(3);
+        StepVerifier.create(namesFlux)
                 .expectNext("ALEX", "CHLOE")
                 .verifyComplete();
     }
 
     @Test
     void namedFluxFlatMapTest() {
-        Flux<String> namedFlux = generatorService.namedFluxFlatMap();
-        StepVerifier.create(namedFlux)
+        Flux<String> namesFlux = generatorService.namesFluxFlatMap();
+        StepVerifier.create(namesFlux)
                 .expectNext("A", "L", "E", "X", "B", "E", "N", "C", "H", "L", "O", "E")
                 .verifyComplete();
     }
 
     @Test
     void namedFluxFlatMapAsyncTest() {
-        Flux<String> namedFlux = generatorService.namedFluxFlatMapAsync();
-        StepVerifier.create(namedFlux)
+        Flux<String> namesFlux = generatorService.namesFluxFlatMapAsync();
+        StepVerifier.create(namesFlux)
                 .expectNextCount(12)
                 .verifyComplete();
     }
 
     @Test
     void namedFluxConcatMapTest() {
-        Flux<String> namedFlux = generatorService.namedFluxConcatMap();
-        StepVerifier.create(namedFlux)
+        Flux<String> namesFlux = generatorService.namesFluxConcatMap();
+        StepVerifier.create(namesFlux)
                 .expectNext("A", "L", "E", "X", "B", "E", "N", "C", "H", "L", "O", "E")
                 .verifyComplete();
     }
