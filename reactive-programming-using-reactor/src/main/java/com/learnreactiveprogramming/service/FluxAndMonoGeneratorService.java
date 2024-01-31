@@ -66,7 +66,8 @@ public class FluxAndMonoGeneratorService {
                         .filter(s -> s.length() > stringLength);
 
         return Flux.just("Alex", "Ben", "Chloe")
-                .transform(filterMap);
+                .transform(filterMap)
+                .defaultIfEmpty("default");
     }
 
     private Flux<String> splitStringWithDelay(String name) {

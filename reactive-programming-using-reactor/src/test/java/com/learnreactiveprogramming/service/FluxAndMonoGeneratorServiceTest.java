@@ -100,4 +100,12 @@ class FluxAndMonoGeneratorServiceTest {
                 .expectNext("ALEX", "CHLOE")
                 .verifyComplete();
     }
+
+    @Test
+    void namesFluxTransformEmptyTest() {
+        Flux<String> namesFlux = generatorService.namesFluxTransform(6);
+        StepVerifier.create(namesFlux)
+                .expectNext("default")
+                .verifyComplete();
+    }
 }
