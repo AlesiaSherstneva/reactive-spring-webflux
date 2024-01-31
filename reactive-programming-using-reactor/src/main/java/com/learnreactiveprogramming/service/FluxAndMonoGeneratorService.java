@@ -106,4 +106,25 @@ public class FluxAndMonoGeneratorService {
                 .map(String::toUpperCase)
                 .flatMapMany(this::splitString);
     }
+
+    public Flux<String> exploreConcat() {
+        Flux<String> abcFlux = Flux.just("A", "B", "C");
+        Flux<String> defFlux = Flux.just("D", "E", "F");
+
+        return Flux.concat(abcFlux, defFlux);
+    }
+
+    public Flux<String> exploreConcatWithFlux() {
+        Flux<String> abcFlux = Flux.just("A", "B", "C");
+        Flux<String> defFlux = Flux.just("D", "E", "F");
+
+        return abcFlux.concatWith(defFlux);
+    }
+
+    public Flux<String> exploreConcatWithMono() {
+        Mono<String> aMono = Mono.just("A");
+        Mono<String> bMono = Mono.just("B");
+
+        return aMono.concatWith(bMono);
+    }
 }
