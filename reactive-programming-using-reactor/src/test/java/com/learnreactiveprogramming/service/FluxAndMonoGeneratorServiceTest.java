@@ -108,4 +108,12 @@ class FluxAndMonoGeneratorServiceTest {
                 .expectNext("default")
                 .verifyComplete();
     }
+
+    @Test
+    void namesFluxTransformSwitchIfEmptyTest() {
+        Flux<String> namesFlux = generatorService.namesFluxTransformSwitchIfEmpty(6);
+        StepVerifier.create(namesFlux)
+                .expectNext("DEFAULT")
+                .verifyComplete();
+    }
 }

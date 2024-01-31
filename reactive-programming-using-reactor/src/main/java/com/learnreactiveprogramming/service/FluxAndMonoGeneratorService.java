@@ -70,6 +70,19 @@ public class FluxAndMonoGeneratorService {
                 .defaultIfEmpty("default");
     }
 
+    public Flux<String> namesFluxTransformSwitchIfEmpty(int stringLength) {
+        Function<Flux<String>, Flux<String>> filterMap =
+                name -> name.map(String::toUpperCase)
+                        .filter(s -> s.length() > stringLength);
+
+        Flux<String> defaultFlux = Flux.just("default")
+                .transform(filterMap);
+
+        return Flux.just("Alex", "Ben", "Chloe")
+                .transform(filterMap)
+                .switchIfEmpty(defaultFlux);
+    }
+
     private Flux<String> splitStringWithDelay(String name) {
         int delay = new Random().nextInt(1000);
         return Flux.just(name.split(""))
