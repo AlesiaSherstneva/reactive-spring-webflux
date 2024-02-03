@@ -166,4 +166,12 @@ class FluxAndMonoGeneratorServiceTest {
                 .expectNext("A", "B")
                 .verifyComplete();
     }
+
+    @Test
+    void exploreMergeSequentialTest() {
+        Flux<String> mergeFlux = generatorService.exploreMergeSequential();
+        StepVerifier.create(mergeFlux)
+                .expectNext("A", "B", "C", "D", "E", "F")
+                .verifyComplete();
+    }
 }
