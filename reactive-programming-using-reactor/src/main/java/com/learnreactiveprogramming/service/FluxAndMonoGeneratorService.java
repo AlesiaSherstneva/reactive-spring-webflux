@@ -161,4 +161,37 @@ public class FluxAndMonoGeneratorService {
 
         return Flux.mergeSequential(abcFlux, defFlux);
     }
+
+    public Flux<String> exploreZip() {
+        Flux<String> abcFlux = Flux.just("A", "B", "C");
+        Flux<String> defFlux = Flux.just("D", "E", "F");
+
+        return Flux.zip(abcFlux, defFlux,
+                (first, second) -> first + second);
+    }
+
+    public Flux<String> exploreZipTuple() {
+        Flux<String> abcFlux = Flux.just("A", "B", "C");
+        Flux<String> defFlux = Flux.just("D", "E", "F");
+        Flux<String> _123Flux = Flux.just("1", "2", "3");
+        Flux<String> _456Flux = Flux.just("4", "5", "6");
+
+        return Flux.zip(abcFlux, defFlux, _123Flux, _456Flux)
+                .map(t4 -> t4.getT1() + t4.getT2() + t4.getT3() + t4.getT4());
+    }
+
+    public Flux<String> exploreZipWithFlux() {
+        Flux<String> abcFlux = Flux.just("A", "B", "C");
+        Flux<String> defFlux = Flux.just("D", "E", "F");
+
+        return abcFlux.zipWith(defFlux, (first, second) -> first + second);
+    }
+
+    public Mono<String> exploreZipWithMono() {
+        Mono<String> aMono = Mono.just("A");
+        Mono<String> bMono = Mono.just("B");
+
+        return aMono.zipWith(bMono)
+                .map(t2 -> t2.getT1() + t2.getT2());
+    }
 }

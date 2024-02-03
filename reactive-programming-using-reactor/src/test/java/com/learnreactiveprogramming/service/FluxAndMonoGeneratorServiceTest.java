@@ -174,4 +174,38 @@ class FluxAndMonoGeneratorServiceTest {
                 .expectNext("A", "B", "C", "D", "E", "F")
                 .verifyComplete();
     }
+
+    @Test
+    void exploreZipTest() {
+        Flux<String> zipFlux = generatorService.exploreZip();
+        testZipFlux(zipFlux);
+    }
+
+    @Test
+    void exploreZipTupleTest() {
+        Flux<String> zipFlux = generatorService.exploreZipTuple();
+        StepVerifier.create(zipFlux)
+                .expectNext("AD14", "BE25", "CF36")
+                .verifyComplete();
+    }
+
+    @Test
+    void exploreZipWithFluxTest() {
+        Flux<String> zipFlux = generatorService.exploreZipWithFlux();
+        testZipFlux(zipFlux);
+    }
+
+    private static void testZipFlux(Flux<String> zipFlux) {
+        StepVerifier.create(zipFlux)
+                .expectNext("AD", "BE", "CF")
+                .verifyComplete();
+    }
+
+    @Test
+    void exploreZipWithMonoTest() {
+        Mono<String> zipMono = generatorService.exploreZipWithMono();
+        StepVerifier.create(zipMono)
+                .expectNext("AB")
+                .verifyComplete();
+    }
 }
