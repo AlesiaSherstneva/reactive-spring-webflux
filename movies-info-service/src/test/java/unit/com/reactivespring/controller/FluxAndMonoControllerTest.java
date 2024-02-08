@@ -11,6 +11,8 @@ import reactor.test.StepVerifier;
 import java.util.List;
 import java.util.Objects;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 @WebFluxTest(controllers = FluxAndMonoController.class)
 @AutoConfigureWebTestClient
 class FluxAndMonoControllerTest {
@@ -50,6 +52,19 @@ class FluxAndMonoControllerTest {
                 .consumeWith(listEntityExchangeResult -> {
                     List<Integer> response = listEntityExchangeResult.getResponseBody();
                     assert Objects.requireNonNull(response).size() == 3;
+                });
+    }
+
+    @Test
+    void monoTest() {
+        webTestClient.get()
+                .uri("/mono")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(String.class)
+                .consumeWith(stringEntityExchangeResult -> {
+                    String response = stringEntityExchangeResult.getResponseBody();
+                    assertEquals("Hello world", response);
                 });
     }
 }
