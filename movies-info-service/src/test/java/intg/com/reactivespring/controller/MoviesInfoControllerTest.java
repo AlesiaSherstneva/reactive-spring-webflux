@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static com.mongodb.assertions.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
@@ -47,6 +48,25 @@ class MoviesInfoControllerTest {
                 .expectStatus().is2xxSuccessful()
                 .expectBodyList(MovieInfo.class)
                 .hasSize(3);
+    }
+
+    @Test
+    void getMovieInfoByIdTest() {
+        String movieInfoId = "abc";
+
+        webTestClient.get()
+                .uri("/v1/movie-infos/{id}", movieInfoId)
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBody()
+                .jsonPath("$.name").isEqualTo("Dark Knight Rises");
+
+                /* .expectBody(MovieInfo.class)
+                    .consumeWith(movieInfoEntityExchangeResult -> {
+                    MovieInfo response = movieInfoEntityExchangeResult.getResponseBody();
+                    assert response != null;
+                    assertEquals("Dark Knight Rises", response.getName());
+                }); */
     }
 
     @Test
