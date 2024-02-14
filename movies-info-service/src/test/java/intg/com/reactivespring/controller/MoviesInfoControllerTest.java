@@ -87,6 +87,26 @@ class MoviesInfoControllerTest {
                 });
     }
 
+    @Test
+    void updateMovieInfoTest() {
+        String movieInfoId = "abc";
+        MovieInfo updatedMovie = new MovieInfo(null, "Dark Knight Rises1", 2005,
+                List.of("Christian Bale", "Michael Cane"), LocalDate.parse("2005-06-15"));
+
+        webTestClient.put()
+                .uri("/v1/movie-infos/{id}", movieInfoId)
+                .bodyValue(updatedMovie)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(MovieInfo.class)
+                .consumeWith(movieInfoEntityExchangeResult -> {
+                    MovieInfo response = movieInfoEntityExchangeResult.getResponseBody();
+                    assert response != null;
+                    assertNotNull(response.getMovieInfoId());
+                    assertEquals("Dark Knight Rises1", response.getName());
+                });
+    }
+
     @AfterEach
     void tearDown() {
         movieInfoRepository.deleteAll().block();
