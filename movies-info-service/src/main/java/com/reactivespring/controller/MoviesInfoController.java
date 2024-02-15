@@ -4,6 +4,7 @@ import com.reactivespring.domain.MovieInfo;
 import com.reactivespring.service.MoviesInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,5 +46,11 @@ public class MoviesInfoController {
     public Mono<MovieInfo> updateMovieInfo(@RequestBody MovieInfo updatedMovieInfo,
                                            @PathVariable String id) {
         return moviesInfoService.updateMovieInfo(updatedMovieInfo, id);
+    }
+
+    @DeleteMapping("/movie-infos/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public Mono<Void> deleteMovieInfo(@PathVariable String id) {
+        return moviesInfoService.deleteMovieInfo(id);
     }
 }

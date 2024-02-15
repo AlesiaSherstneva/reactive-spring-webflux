@@ -10,6 +10,8 @@ import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWeb
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import reactor.core.publisher.Flux;
+import reactor.test.StepVerifier;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -105,6 +107,21 @@ class MoviesInfoControllerTest {
                     assertNotNull(response.getMovieInfoId());
                     assertEquals("Dark Knight Rises1", response.getName());
                 });
+    }
+
+    @Test
+    void deleteMovieInfoTest() {
+        String movieInfoId = "abc";
+
+        webTestClient.delete()
+                .uri("/v1/movie-infos/{id}", movieInfoId)
+                .exchange()
+                .expectStatus().isNoContent();
+
+        Flux<MovieInfo> movieInfoFlux = movieInfoRepository.findAll();
+        StepVerifier.create(movieInfoFlux)
+                .expectNextCount(2)
+                .verifyComplete();
     }
 
     @AfterEach
