@@ -92,10 +92,8 @@ public class MoviesInfoControllerUnitTest {
 
     @Test
     void addMovieInfoValidationTest() {
-        MovieInfo newMovie = new MovieInfo("mockId", "", null,
+        MovieInfo newMovie = new MovieInfo("mockId", "", -2005,
                 List.of("Christian Bale", "Michael Cane"), LocalDate.parse("2005-06-15"));
-
-        when(moviesInfoService.addMovieInfo(isA(MovieInfo.class))).thenReturn(Mono.just(newMovie));
 
         webTestClient.post()
                 .uri("/v1/movie-infos")
@@ -105,8 +103,9 @@ public class MoviesInfoControllerUnitTest {
                 .expectBody(String.class)
                 .consumeWith(stringEntityExchangeResult -> {
                     String response = stringEntityExchangeResult.getResponseBody();
+                    String expectedMessage = "Name must be present, Year must be a positive value";
                     assert response != null;
-
+                    assertEquals(expectedMessage, response);
                 });
     }
 
