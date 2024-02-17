@@ -91,6 +91,26 @@ public class MoviesInfoControllerUnitTest {
     }
 
     @Test
+    void addMovieInfoValidationTest() {
+        MovieInfo newMovie = new MovieInfo("mockId", "", null,
+                List.of("Christian Bale", "Michael Cane"), LocalDate.parse("2005-06-15"));
+
+        when(moviesInfoService.addMovieInfo(isA(MovieInfo.class))).thenReturn(Mono.just(newMovie));
+
+        webTestClient.post()
+                .uri("/v1/movie-infos")
+                .bodyValue(newMovie)
+                .exchange()
+                .expectStatus().isBadRequest()
+                .expectBody(String.class)
+                .consumeWith(stringEntityExchangeResult -> {
+                    String response = stringEntityExchangeResult.getResponseBody();
+                    assert response != null;
+
+                });
+    }
+
+    @Test
     void updateMovieInfoTest() {
         String movieInfoId = "abc";
         MovieInfo updatedMovie = new MovieInfo(movieInfoId, "Dark Knight Rises1", 2005,
