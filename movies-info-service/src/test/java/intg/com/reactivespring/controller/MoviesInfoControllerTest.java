@@ -72,6 +72,16 @@ class MoviesInfoControllerTest {
     }
 
     @Test
+    void getMovieInfoByIdNotFoundTest() {
+        String movieInfoId = "def";
+
+        webTestClient.get()
+                .uri("/v1/movie-infos/{id}", movieInfoId)
+                .exchange()
+                .expectStatus().isNotFound();
+    }
+
+    @Test
     void addMovieInfoTest() {
         MovieInfo newMovie = new MovieInfo(null, "Batman Begins1", 2005,
                 List.of("Christian Bale", "Michael Cane"), LocalDate.parse("2005-06-15"));
