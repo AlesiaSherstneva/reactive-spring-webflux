@@ -91,6 +91,15 @@ class MovieInfoRepositoryTest {
                 .verifyComplete();
     }
 
+    @Test
+    void findMovieInfosByYearTest() {
+        Flux<MovieInfo> movieInfoFlux = movieInfoRepository.findByYear(2005);
+
+        StepVerifier.create(movieInfoFlux)
+                .expectNextCount(1)
+                .verifyComplete();
+    }
+
     @AfterEach
     void tearDown() {
         movieInfoRepository.deleteAll().block();
