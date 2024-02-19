@@ -100,6 +100,19 @@ class MovieInfoRepositoryTest {
                 .verifyComplete();
     }
 
+    @Test
+    void findMovieInfosByNameTest() {
+        Mono<MovieInfo> movieInfoMono = movieInfoRepository.findByName("The Dark Knight");
+
+        StepVerifier.create(movieInfoMono)
+                .assertNext(movieInfo -> {
+                    assertNotNull(movieInfo.getMovieInfoId());
+                    assertEquals("The Dark Knight", movieInfo.getName());
+                    assertEquals(2008, movieInfo.getYear());
+                })
+                .verifyComplete();
+    }
+
     @AfterEach
     void tearDown() {
         movieInfoRepository.deleteAll().block();
