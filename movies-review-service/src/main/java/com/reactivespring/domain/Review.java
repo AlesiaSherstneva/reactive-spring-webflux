@@ -14,7 +14,6 @@ import javax.validation.constraints.Min;
 @AllArgsConstructor
 @Document
 public class Review {
-
     @Id
     private String reviewId;
     private Long movieInfoId;
