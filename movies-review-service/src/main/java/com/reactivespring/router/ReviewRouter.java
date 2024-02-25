@@ -16,7 +16,7 @@ public class ReviewRouter {
         return route()
                 .nest(path("/v1/reviews"), builder -> builder
                         .POST("", reviewHandler::addReview)
-                        .GET("", request -> reviewHandler.getReviews())
+                        .GET("", reviewHandler::getReviews)
                         .PUT("/{id}", reviewHandler::updateReview)
                         .DELETE("/{id}", reviewHandler::deleteReview))
                 .GET("/v1/hello-world", request -> ServerResponse.ok().bodyValue("hello-world"))

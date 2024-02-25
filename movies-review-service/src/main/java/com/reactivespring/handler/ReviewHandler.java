@@ -10,13 +10,23 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Optional;
+
 @Component
 @RequiredArgsConstructor
 public class ReviewHandler {
     private final ReviewReactiveRepository reviewReactiveRepository;
 
-    public Mono<ServerResponse> getReviews() {
-        Flux<Review> reviewsFlux = reviewReactiveRepository.findAll();
+    public Mono<ServerResponse> getReviews(ServerRequest request) {
+        Optional<String> movieInfoId = request.queryParam("movieInfoId");
+        Flux<Review> reviewsFlux;
+
+        if (movieInfoId.isPresent()) {
+            reviewsFlux = reviewReactiveRepository.findReviewsByMovieInfoId(Long.valueOf(movieInfoId.get()));
+        } else {
+            reviewsFlux = reviewReactiveRepository.findAll();
+        }
+
         return ServerResponse.ok().body(reviewsFlux, Review.class);
     }
 
