@@ -33,12 +33,12 @@ public class ReviewIntgTest {
 
     @BeforeEach
     void setUp() {
-        Review first = new Review(null, 1L, "Awesome movie", 9.0);
-        Review second = new Review(null, 1L, "Awesome movie1", 9.0);
-        Review third = new Review(null, 2L, "Excellent movie", 8.0);
+        Review firstReview = new Review(null, 1L, "Awesome movie", 9.0);
+        Review secondReview = new Review(null, 1L, "Awesome movie1", 9.0);
+        Review thirdReview = new Review(null, 2L, "Excellent movie", 8.0);
 
-        List<Review> reviewList = List.of(first, second, third);
-        reviewReactiveRepository.saveAll(reviewList).blockLast();
+        List<Review> reviews = List.of(firstReview, secondReview, thirdReview);
+        reviewReactiveRepository.saveAll(reviews).blockLast();
     }
 
     @Test
