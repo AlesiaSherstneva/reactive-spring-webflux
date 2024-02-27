@@ -98,6 +98,17 @@ public class ReviewUnitTest {
     }
 
     @Test
+    void addReviewValidationTest() {
+        Review newReview = new Review("abc", null, "Awesome movie", -9.0);
+
+        webTestClient.post()
+                .uri(REVIEWS_URL)
+                .bodyValue(newReview)
+                .exchange()
+                .expectStatus().isBadRequest();
+    }
+
+    @Test
     void updateReviewTest() {
         Review oldReview = new Review("abc", 1L, "Awesome movie", 9.0);
         Review updatedReview = new Review("abc", 1L, "Awful stupid movie", 9.0);

@@ -1,6 +1,7 @@
 package com.reactivespring.handler;
 
 import com.reactivespring.domain.Review;
+import com.reactivespring.exception.ReviewDataException;
 import com.reactivespring.repository.ReviewReactiveRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -10,12 +11,17 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
 public class ReviewHandler {
     private final ReviewReactiveRepository reviewReactiveRepository;
+    private final Validator validator;
 
     public Mono<ServerResponse> getReviews(ServerRequest request) {
         Optional<String> movieInfoId = request.queryParam("movieInfoId");
@@ -32,8 +38,21 @@ public class ReviewHandler {
 
     public Mono<ServerResponse> addReview(ServerRequest request) {
         return request.bodyToMono(Review.class)
+                .doOnNext(this::validate)
                 .flatMap(reviewReactiveRepository::save)
                 .flatMap(ServerResponse.status(HttpStatus.CREATED)::bodyValue);
+    }
+
+    private void validate(Review review) {
+        Set<ConstraintViolation<Review>> reviewViolations = validator.validate(review);
+
+        if (reviewViolations.size() > 0) {
+            String errorMessage = reviewViolations.stream()
+                    .map(ConstraintViolation::getMessage)
+                    .sorted()
+                    .collect(Collectors.joining(", "));
+            throw new ReviewDataException(errorMessage);
+        }
     }
 
     public Mono<ServerResponse> updateReview(ServerRequest request) {
