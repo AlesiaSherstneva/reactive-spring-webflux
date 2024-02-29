@@ -2,6 +2,7 @@ package com.reactivespring.handler;
 
 import com.reactivespring.domain.Review;
 import com.reactivespring.exception.ReviewDataException;
+import com.reactivespring.exception.ReviewNotFoundException;
 import com.reactivespring.repository.ReviewReactiveRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -57,7 +58,9 @@ public class ReviewHandler {
 
     public Mono<ServerResponse> updateReview(ServerRequest request) {
         String reviewId = request.pathVariable("id");
-        Mono<Review> existingReview = reviewReactiveRepository.findById(reviewId);
+        Mono<Review> existingReview = reviewReactiveRepository.findById(reviewId)
+                .switchIfEmpty(Mono.error(new ReviewNotFoundException("Review not found for the id: " + reviewId)));
+
         return existingReview.flatMap(review -> request.bodyToMono(Review.class)
                 .map(reqReview -> {
                     review.setComment(reqReview.getComment());
@@ -66,6 +69,10 @@ public class ReviewHandler {
                 })
                 .flatMap(reviewReactiveRepository::save)
                 .flatMap(savedReview -> ServerResponse.ok().bodyValue(savedReview)));
+                // alternative - if reviewId is not valid string
+                // need to comment higher switchIfEmpty()
+                // .switchIfEmpty(ServerResponse.notFound().build());
+                // no way to provide a message
     }
 
     public Mono<ServerResponse> deleteReview(ServerRequest request) {

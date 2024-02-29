@@ -21,6 +21,8 @@ public class GlobalExceptionHandler implements ErrorWebExceptionHandler {
 
         if (ex instanceof ReviewDataException) {
             exchange.getResponse().setStatusCode(HttpStatus.BAD_REQUEST);
+        } else if (ex instanceof ReviewNotFoundException) {
+            exchange.getResponse().setStatusCode(HttpStatus.NOT_FOUND);
         } else {
             exchange.getResponse().setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR);
         }
