@@ -1,6 +1,7 @@
 package com.reactivespring.routes;
 
 import com.reactivespring.domain.Review;
+import com.reactivespring.exception.GlobalExceptionHandler;
 import com.reactivespring.handler.ReviewHandler;
 import com.reactivespring.repository.ReviewReactiveRepository;
 import com.reactivespring.router.ReviewRouter;
@@ -26,7 +27,7 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.when;
 
 @WebFluxTest
-@ContextConfiguration(classes = {ReviewRouter.class, ReviewHandler.class})
+@ContextConfiguration(classes = {ReviewRouter.class, ReviewHandler.class, GlobalExceptionHandler.class})
 @AutoConfigureWebTestClient
 public class ReviewUnitTest {
     static String REVIEWS_URL = "/v1/reviews";
@@ -105,7 +106,9 @@ public class ReviewUnitTest {
                 .uri(REVIEWS_URL)
                 .bodyValue(newReview)
                 .exchange()
-                .expectStatus().isBadRequest();
+                .expectStatus().isBadRequest()
+                .expectBody(String.class)
+                .isEqualTo("Movie info id must not be null, Rating must be a non-negative value");
     }
 
     @Test
