@@ -26,6 +26,4 @@ public class MoviesInfoClientException extends RuntimeException{
     public void setStatusCode(Integer statusCode) {
         this.statusCode = statusCode;
     }
-
-
 }

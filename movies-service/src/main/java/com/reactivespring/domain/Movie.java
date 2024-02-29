@@ -11,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Movie {
-
     private MovieInfo movieInfo;
+
     private List<Review> reviewList;
 }
