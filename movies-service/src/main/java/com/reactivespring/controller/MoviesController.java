@@ -14,7 +14,7 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 
 @RestController
-@RequestMapping("/vi/movies")
+@RequestMapping("/v1/movies")
 @RequiredArgsConstructor
 public class MoviesController {
     private final MoviesInfoRestClient moviesInfoRestClient;
