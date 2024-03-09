@@ -100,4 +100,21 @@ public class MoviesControllerIntgTest {
                     assertEquals("Batman Begins", response.getMovieInfo().getName());
                 });
     }
+
+    @Test
+    void retrieveMovieByIdServerErrorTest() {
+        String movieId = "abc";
+
+        stubFor(get(urlEqualTo("/v1/movie-infos/" + movieId))
+                .willReturn(aResponse()
+                        .withStatus(500)
+                        .withBody("Movie info service unavailable")));
+
+        webTestClient.get()
+                .uri("/v1/movies/{id}", movieId)
+                .exchange()
+                .expectStatus().is5xxServerError()
+                .expectBody(String.class)
+                .isEqualTo("Server Exception in movies info service: Movie info service unavailable");
+    }
 }
