@@ -3,6 +3,7 @@ package com.reactivespring.client;
 import com.reactivespring.domain.Review;
 import com.reactivespring.exception.ReviewsClientException;
 import com.reactivespring.exception.ReviewsServerException;
+import com.reactivespring.util.RetryUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,6 +49,7 @@ public class ReviewRestClient {
                                             String.format("Server Exception in movies reviews service: %s", responseMessage)
                                     )));
                         })
-                .bodyToFlux(Review.class);
+                .bodyToFlux(Review.class)
+                .retryWhen(RetryUtil.retrySpec());
     }
 }
